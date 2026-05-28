@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartGrow - Smart Irrigation Management</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="page active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="logo">
+                    <h1>🌾 SmartGrow</h1>
+                    <p>Smart Irrigation Management System</p>
+                </div>
+                
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="farmerType">Farmer Type</label>
+                        <select id="farmerType" name="farmerType" required>
+                            <option value="">Select Farmer Type</option>
+                            <option value="smallscale">Small Scale Farmer</option>
+                            <option value="commercial">Commercial Farmer</option>
+                            <option value="organic">Organic Farmer</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">Login</button>
+                    
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="#" onclick="toggleSignup()">Sign Up</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Page -->
+    <div id="dashboardPage" class="page">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <h2>🌾 SmartGrow Dashboard</h2>
+            </div>
+            <div class="navbar-right">
+                <span id="userDisplay">Welcome, Farmer</span>
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="dashboard-container">
+            <div class="header-section">
+                <h1>Select Your Crop</h1>
+                <p>Choose a crop to view detailed irrigation and farming information</p>
+            </div>
+
+            <div class="crops-grid">
+                <!-- Tomato Card -->
+                <div class="crop-card" onclick="viewCropDetails('tomato')">
+                    <img src="https://images.unsplash.com/photo-1592924357615-bc4f2222b8a2?w=400&h=300&fit=crop" alt="Tomato">
+                    <div class="crop-card-content">
+                        <h3>Tomato</h3>
+                        <p>Summer Crop</p>
+                    </div>
+                </div>
+
+                <!-- Sugarcane Card -->
+                <div class="crop-card" onclick="viewCropDetails('sugarcane')">
+                    <img src="https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=400&h=300&fit=crop" alt="Sugarcane">
+                    <div class="crop-card-content">
+                        <h3>Sugarcane</h3>
+                        <p>Cash Crop</p>
+                    </div>
+                </div>
+
+                <!-- Paddy Card -->
+                <div class="crop-card" onclick="viewCropDetails('paddy')">
+                    <img src="https://images.unsplash.com/photo-1625246333195-78d9c38ad576?w=400&h=300&fit=crop" alt="Paddy">
+                    <div class="crop-card-content">
+                        <h3>Paddy (Rice)</h3>
+                        <p>Staple Crop</p>
+                    </div>
+                </div>
+
+                <!-- Chilli Card -->
+                <div class="crop-card" onclick="viewCropDetails('chilli')">
+                    <img src="https://images.unsplash.com/photo-1599599810694-b5ac4dd33cef?w=400&h=300&fit=crop" alt="Chilli">
+                    <div class="crop-card-content">
+                        <h3>Chilli</h3>
+                        <p>Spice Crop</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crop Details Page -->
+    <div id="cropDetailsPage" class="page">
+        <nav class="navbar">
+            <div class="navbar-left">
+                <button class="btn-back" onclick="backToDashboard()">← Back to Crops</button>
+            </div>
+            <div class="navbar-right">
+                <button class="btn-logout" onclick="logout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="crop-details-container">
+            <div class="crop-details-header">
+                <img id="cropImage" src="" alt="Crop Image">
+                <div class="crop-info-header">
+                    <h1 id="cropName"></h1>
+                    <p id="cropScientific"></p>
+                </div>
+            </div>
+
+            <div class="details-sections">
+                <!-- Water Level Section -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h2>💧 Water Requirements</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="info-item">
+                            <span class="label">Daily Water Need:</span>
+                            <span class="value" id="waterDaily"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Total Seasonal Need:</span>
+                            <span class="value" id="waterTotal"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Soil Moisture Level:</span>
+                            <span class="value" id="soilMoisture"></span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="moistureProgress" class="progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plantation Section -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h2>📅 Best Time for Plantation</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="info-item">
+                            <span class="label">Season:</span>
+                            <span class="value" id="season"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Best Months:</span>
+                            <span class="value" id="plantMonths"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Temperature Range:</span>
+                            <span class="value" id="tempRange"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Soil Type:</span>
+                            <span class="value" id="soilType"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fertilizer Section -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h2>🧪 Fertilizer Requirements</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="fertilizer-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Type</th>
+                                        <th>Quantity per Hectare</th>
+                                        <th>Application Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fertilizerBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Harvesting Section -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h2>🌾 Harvesting Guide</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="harvest-steps" id="harvestSteps"></div>
+                    </div>
+                </div>
+
+                <!-- Selling Guide Section -->
+                <div class="detail-card">
+                    <div class="card-header">
+                        <h2>💰 Best Way to Sell</h2>
+                    </div>
+                    <div class="card-content">
+                        <div class="selling-tips" id="sellingTips"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
